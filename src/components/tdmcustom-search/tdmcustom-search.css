@@ -1,0 +1,239 @@
+                   :host {
+                      display: block;
+                      width: fit-content;
+                      margin: 0 auto;
+                      background: rgb(27, 156, 252);
+                      background: linear-gradient(90deg, rgba(27, 156, 252, 1) 9%, rgba(5, 196, 107, 1) 100%);
+                      padding: 3px;
+                  }
+                  
+                  .tdmcustom-search {
+                      display: flex;
+                      flex-direction: column;
+                      padding: 30px;
+                      background-color: white;
+                  }
+                  
+                  .tdmcustom-search__title {
+                      color: black;
+                      margin-top: 0;
+                      font-family: 'Roboto', sans-serif;
+                  }
+                  
+                  .tdmcustom-search__input {
+                      flex: 1;
+                      padding: 10px;
+                      font-family: 'Roboto', sans-serif;
+                      font-size: 16px;
+                      border: none;
+                      background-color: #ecf0f1;
+                      transition: all .3s;
+                  }
+                  
+                  .tdmcustom-search__input:focus {
+                      border: none;
+                      outline: none;
+                      background-color: #d6d8d8;
+                  }
+                  
+                  .tdmcustom-search__button {
+                      background: rgb(27, 156, 252);
+                      background: linear-gradient(90deg, rgba(27, 156, 252, 1) 9%, rgba(5, 196, 107, 1) 100%);
+                      font-family: 'Roboto', sans-serif;
+                      color: white;
+                      border: none;
+                      outline: none;
+                      transition: all .3s;
+                      cursor: pointer;
+                      padding: 10px 15px;
+                      font-size: 16px;
+                  }
+                  
+                  .tdmcustom-search__button:hover {
+                      opacity: 0.8;
+                  }
+                  
+                  .tdmcustom-search__button:active {
+                      border: none;
+                      outline: none;
+                  }
+                  
+                  .overlay__checkbox {
+                      visibility: hidden;
+                  }
+                  
+                  .overlay {
+                      height: 100%;
+                      width: 100%;
+                      top: 0;
+                      left: 0;
+                      position: fixed;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      background-color: rgba(0, 0, 0, 0.6);
+                      opacity: 0;
+                      visibility: hidden;
+                      transition: all .4s;
+                  }
+                  
+                  .overlay.active {
+                      visibility: visible;
+                      opacity: 1;
+                  }
+                  
+                  .popup {
+                      box-sizing: border-box;
+                      height: 80vh;
+                      width: 50vw;
+                      border-radius: 5px;
+                      background-color: white;
+                      padding: 4rem;
+                      position: relative;
+                      font-family: 'Roboto', sans-serif;
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: flex-start;
+                      align-items: center;
+                  }
+                  
+                  .popup__close {
+                      position: absolute;
+                      top: 25px;
+                      right: 30px;
+                      line-height: 1;
+                      color: #333;
+                      font-size: 1.7rem;
+                      transition: all .4s;
+                      backface-visibility: hidden;
+                      cursor: pointer;
+                  }
+                  
+                  .popup__close:hover {
+                      transform: scale(1.2);
+                      color: #c0392b;
+                      backface-visibility: hidden;
+                  }
+                  
+                  .popup__title {
+                      color: #3498db;
+                      font-size: 30px;
+                      margin-top: 0;
+                      margin-bottom: 30px;
+                  }
+                  /* SPINNER */
+                  
+                  .spinner-div {
+                      display: flex;
+                      flex: 1;
+                      justify-content: center;
+                      align-items: center;
+                  }
+                  
+                  .lds-ripple {
+                      display: inline-block;
+                      position: relative;
+                      width: 80px;
+                      height: 80px;
+                  }
+                  
+                  .lds-ripple div {
+                      position: absolute;
+                      border: 4px solid #2980b9;
+                      opacity: 1;
+                      border-radius: 50%;
+                      animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+                  }
+                  
+                  .lds-ripple div:nth-child(2) {
+                      animation-delay: -0.5s;
+                  }
+                  
+                  @keyframes lds-ripple {
+                      0% {
+                          top: 36px;
+                          left: 36px;
+                          width: 0;
+                          height: 0;
+                          opacity: 1;
+                      }
+                      100% {
+                          top: 0px;
+                          left: 0px;
+                          width: 72px;
+                          height: 72px;
+                          opacity: 0;
+                      }
+                  }
+                  /* ERROR */
+                  
+                  .error-message {
+                      flex: 1;
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                  }
+                  
+                  .error-text {
+                      font-size: 16px;
+                      color: #c0392b;
+                      padding: 15px;
+                      border: 2px solid #c0392b;
+                      border-radius: 5px;
+                  }
+                  /* RESULTS */
+                  
+                  .results {
+                      overflow-y: scroll;
+                      align-self: stretch;
+                  }
+                  
+                  .results__list {
+                      list-style: none;
+                  }
+                  
+                  .person {
+                      display: flex;
+                      justify-content: space-between;
+                      padding: 20px 10px 0 10px;
+                  }
+                  
+                  .person:not(:last-child) {
+                      padding: 20px 10px;
+                      border-bottom: 1px solid #333;
+                  }
+                  
+                  .person__img_container {
+                      background: rgb(27, 156, 252);
+                      background: linear-gradient(90deg, rgba(27, 156, 252, 1) 9%, rgba(5, 196, 107, 1) 100%);
+                      padding: 3px;
+                  }
+                  
+                  .person__img {
+                      display: block;
+                      max-height: 200px;
+                  }
+                  
+                  .person__content {
+                      margin: 0 auto 0 20px;
+                  }
+                  
+                  .person__button {
+                      padding: 10px 20px;
+                      background: rgb(27, 156, 252);
+                      background: linear-gradient(90deg, rgba(27, 156, 252, 1) 9%, rgba(5, 196, 107, 1) 100%);
+                      text-decoration: none;
+                      color: white;
+                      margin-top: 16px;
+                      transition: all .3s;
+                      display: block;
+                      width: fit-content;
+                      backface-visibility: hidden;
+                      transition: all .3;
+                      border: none;
+                  }
+                  
+                  .person__button:hover {
+                      transform: scale(1.05);
+                      backface-visibility: hidden;
+                  }

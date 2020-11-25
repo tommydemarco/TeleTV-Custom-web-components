@@ -3,15 +3,17 @@ import { h } from '@stencil/core'
 
 @Component({
     tag: 'tdmcustom-search', 
-    styleUrl: './tdmcustom-search.scss',
-    scoped: true
+    styleUrl: './tdmcustom-search.css',
+    shadow: true
 })
 export class TdmCustomSearch {   
 
     @State() inputValue: string = '';  
     @State() isInputValueValid: boolean = false;
     @State() error: boolean = false;
-    @State() isLoading: boolean = false;
+    @State() isLoading: boolean = true;
+    @State() popupCheckbox: boolean = false;
+    @State() searchResults: {name: string, country: string, image: {medium: string}, birthday: string, string, url: string}[] = [];
 
     //WATCHING FOR STATE CHANGES
     @Watch('inputValue')
@@ -48,6 +50,11 @@ export class TdmCustomSearch {
         this.fetchData(this.inputValue)
     }
 
+    handleCheckbox = (value: boolean) => {
+        this.popupCheckbox = value
+        console.log(this.popupCheckbox)
+    }
+
     componentWillLoad() {
         if(this.propValue) {
             console.log("COMPONENT WILL LOAD")
@@ -57,6 +64,8 @@ export class TdmCustomSearch {
     }
 
     fetchData = async (selectedValue) => {
+        this.searchResults = []
+        this.popupCheckbox = true
         this.error = false 
         this.isLoading = true
         const value = selectedValue.toLowerCase() 
@@ -69,18 +78,74 @@ export class TdmCustomSearch {
                 const newError = new Error('There was a problem while fetching the data')
                 throw newError
             }
-            console.log(responseData)
-            this.isLoading = false
+            const personsArray = responseData .filter(person => person.person.birthday && person.person.country.name && person.person.image && person.person.url)
+                        .map(person => ({name: person.person.name, country: person.person.country.name, birthday: person.person.birthday, image: person.person.image, url: person.person.url  }))
+            console.log(personsArray)
+            setTimeout(() => {
+                this.isLoading = false
+                this.searchResults = personsArray
+            }, 1000)
         } catch(err) {
             this.error = true
             console.log(err)
         }
     }
 
+    renderLoader = () => {
+        return (
+            <div class="spinner-div"><div class="lds-ripple"><div></div><div></div></div></div>
+        )
+    }
+
+    renderError = () => {
+        return (
+            <div class="error-message"><span class="error-text">There was an error. Try again later.</span></div>
+        )
+    }
+
+    renderNoResults = () => {
+        return (
+            <div class="error-message"><span class="error-text">No results for your search.</span></div>
+        )
+    }
+
+    renderResults = () => {
+        return (
+            <div class="results">
+                <ul class="results__list">
+                    {this.searchResults.map(person => (
+                        <li class="person">
+                            <div class="person__img_container">
+                                <img class="person__img" src={person.image.medium} />
+                            </div>
+                            <div class="person__content">
+                                <h4 class="person__name">{person.name}</h4>
+                                <p class="person__bday">Birthday: <b>{person.birthday}</b></p>
+                                <p class="person__country">Country: <b>{person.country}</b></p>
+                                <a href={person.url} class="person__button">View info</a>
+                            </div>
+                        </li>
+                    ))}
+                </ul>     
+            </div>
+        )
+    }
+
+    renderStatus = () => {
+        if(this.error) {
+            return this.renderError()
+        } else if (this.isLoading) {
+            return this.renderLoader()
+        } else if (!this.searchResults.length) {
+            console.log("the function got here")
+            return this.renderNoResults()
+        } 
+    }
+
     render() {
         return (
             <div class="tdmcustom-search">
-                <h1>Select the name of {this.searchFor}</h1>
+                <h1 class="tdmcustom-search__title">Find info about {this.searchFor}</h1>
                 <form class="tdmcustom-search__form" onSubmit={this.handleSubmit}>
                     <input 
                         class="tdmcustom-search__input" 
@@ -94,9 +159,15 @@ export class TdmCustomSearch {
                             Find Info
                     </button>
                 </form>
+                <div class={this.popupCheckbox ? 'overlay active' : 'overlay'} >
+                    <div class="popup">
+                        <span class="popup__close" onClick={() => this.handleCheckbox(false)}>&times;</span>
+                        <h2 class="popup__title">Your search results</h2>
+                        {this.renderStatus()} 
+                        {this.searchResults.length > 0 && this.renderResults()}    
+                    </div>
+                </div>
             </div>
-
-
         )
     }
 }
