@@ -10,15 +10,19 @@ export class TdmCustomSearch {
 
     @State() inputValue: string = '';  
     @State() isInputValueValid: boolean = false;
+    @State() error: boolean = false;
+    @State() isLoading: boolean = false;
 
     //WATCHING FOR STATE CHANGES
     @Watch('inputValue')
     onChangeStateValue(newValue: string, oldValue: string) {
         if (newValue !== oldValue) {
-            console.log("STATE WATCHER WAS FIRED")
+           
+
         }
     }
 
+    @Prop() searchFor: string;
     @Prop() propValue: string;
 
     @Watch('propValue')  
@@ -31,11 +35,17 @@ export class TdmCustomSearch {
 
     handleInput(e: Event) {
         const newValue = (e.target as HTMLInputElement).value
-        if (newValue.trim().length > 0 && newValue !== this.inputValue) {
+        if (newValue.trim().length > 0) {
             this.inputValue = newValue;
             this.isInputValueValid = true;
             console.log("I was run")
+            console.log(this.inputValue)
         }       
+    }
+
+    handleSubmit = (e: Event) => {
+        e.preventDefault() 
+        this.fetchData(this.inputValue)
     }
 
     componentWillLoad() {
@@ -46,15 +56,37 @@ export class TdmCustomSearch {
         }
     }
 
+    fetchData = async (selectedValue) => {
+        this.error = false 
+        this.isLoading = true
+        const value = selectedValue.toLowerCase() 
+        const url = `https://api.tvmaze.com/search/people?q=${value}`
+        console.log(url)
+        try {
+            const response = await fetch(url)
+            const responseData = await response.json()
+            if(!response.ok) {
+                const newError = new Error('There was a problem while fetching the data')
+                throw newError
+            }
+            console.log(responseData)
+            this.isLoading = false
+        } catch(err) {
+            this.error = true
+            console.log(err)
+        }
+    }
+
     render() {
         return (
             <div class="tdmcustom-search">
-                <form class="tdmcustom-search__form">
+                <h1>Select the name of {this.searchFor}</h1>
+                <form class="tdmcustom-search__form" onSubmit={this.handleSubmit}>
                     <input 
                         class="tdmcustom-search__input" 
                         type="text"
                         value={this.inputValue}
-                        onInput={this.handleInput}
+                        onInput={(e) => this.handleInput(e)}
                     />
                     <button 
                         class="tdmcustom-search__button"
@@ -63,6 +95,8 @@ export class TdmCustomSearch {
                     </button>
                 </form>
             </div>
+
+
         )
     }
 }

@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface TdmcustomSearch {
         "propValue": string;
+        "searchFor": string;
     }
 }
 declare global {
@@ -24,6 +25,7 @@ declare global {
 declare namespace LocalJSX {
     interface TdmcustomSearch {
         "propValue"?: string;
+        "searchFor"?: string;
     }
     interface IntrinsicElements {
         "tdmcustom-search": TdmcustomSearch;
